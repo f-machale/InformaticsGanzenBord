@@ -198,6 +198,12 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 screen.blit(
                     playersScaled, (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
 
+    def showCorrectDie():
+        diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
+            200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+        screen.blit(
+            diceNumber, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
+
     # Game Part 2
 
     def ganzenbordPart2():
@@ -272,12 +278,10 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             # show text on screen
             nameFont = pygame.font.SysFont(None, 15)
 
-            # show correct dice
-            diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
-                200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
-            screen.blit(
-                diceNumber, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
+            # show correct die
+            showCorrectDie()
 
+            # Render players
             for i in range(maxPlayerAmmount + 1):
                 player_x = squares[position[i]][0]
                 player_y = squares[position[i]][1]
@@ -354,12 +358,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         boardStraight = board.get_rect()
         screen.blit(board, boardStraight)
 
-        # show correct dice
-
-        diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
-            200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
-        screen.blit(
-            diceNumber, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
+        # show correct die
+        showCorrectDie()
 
         renderPlayers()
 
