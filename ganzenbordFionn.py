@@ -146,7 +146,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     # Player names:
 
-    def playerNames():
+    def playerNamesFunction():
         player_names = [player0Name, player1Name, player2Name,
                         player3Name, player4Name, player5Name]
         player = str(player_names[turn])
@@ -201,7 +201,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         position = [0, 0, 0, 0, 0, 0]
         done = False
 
-        playerNames()
+        playerNamesFunction()
 
         # needed for framerate of the game
         clock = pygame.time.Clock()
@@ -233,7 +233,11 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                         print(position)  # For bug fixing
 
-                        # if position[turn] >= 5:
+                        if position[turn] >= 5:
+                            players[turn] = pygame.image.load(
+                                f"photosTwo/CyberpunkGoose{turn}.png")
+                            pygame.transform.scale(
+                                players[i], (60 * screenSizeInteger[resolution], 60 * screenSizeInteger[resolution]))
 
                         # makes player go to next turn
                         if turn < maxPlayerAmmount:
@@ -264,19 +268,17 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 player_y = squares[position[i]][1]
 
                 pygame.transform.scale(
-                    players[i]), (60 * screenSizeInteger[resolution], 60 * screenSizeInteger[resolution])
+                    players[i], (60 * screenSizeInteger[resolution], 60 * screenSizeInteger[resolution]))
                 if i % 2 == 0:
                     screen.blit(
-                        players[i]), (int(player_x - 40 * screenSizeInteger[resolution]), int(player_y - 40 * screenSizeInteger[resolution]))
+                        players[i], (int(player_x - 40 * screenSizeInteger[resolution]), int(player_y - 40 * screenSizeInteger[resolution])))
                 else:
                     screen.blit(
-                        players[i]), (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution]))
+                        players[i], (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
 
             # Update game with new graphics
             clock.tick(60)
             pygame.display.flip()
-
-        pygame.quit()
 
     # ----------------------------------------- Main game -----------------------------------------#
 
@@ -335,7 +337,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
         # show correct dice
 
-        diceNumber = pygame.transform.scale(diceNumbers[throw], (
+        diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
             200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
         screen.blit(
             diceNumber, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
