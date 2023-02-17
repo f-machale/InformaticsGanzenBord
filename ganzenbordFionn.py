@@ -135,6 +135,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     # Player images while ganzenboard is active
     players = [pygame.image.load("photosOne/Goose0.png"), pygame.image.load("photosOne/Goose1.png"), pygame.image.load("photosOne/Goose2.png"),
                pygame.image.load("photosOne/Goose3.png"), pygame.image.load("photosOne/Goose4.png"), pygame.image.load("photosOne/Goose5.png")]
+
     playerNames = [player0Name, player1Name, player2Name,
                    player3Name, player4Name, player5Name]
 
@@ -180,6 +181,23 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             time.sleep(0.1)
             i += 1
 
+    def renderPlayers():
+        for i in range(maxPlayerAmmount + 1):
+            player_x = squares[position[i]][0]
+            player_y = squares[position[i]][1]
+            playerNameRenderer = nameFont.render(playerNames[i], 1, (0, 0, 0))
+            screen.blit(playerNameRenderer, (player_x + (30 *
+                        screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
+
+            playersScaled = pygame.transform.scale(
+                players[i], (120 * screenSizeInteger[resolution], 120 * screenSizeInteger[resolution]))
+            if i % 2 == 0:
+                screen.blit(
+                    playersScaled, (int(player_x - 40 * screenSizeInteger[resolution]), int(player_y - 40 * screenSizeInteger[resolution])))
+            else:
+                screen.blit(
+                    playersScaled, (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
+
     # Game Part 2
 
     def ganzenbordPart2():
@@ -198,7 +216,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         diceNumbers = [pygame.image.load("photosOne/diceNumber1.png"), pygame.image.load("photosOne/diceNumber2.png"), pygame.image.load("photosOne/diceNumber3.png"),
                        pygame.image.load("photosOne/diceNumber4.png"), pygame.image.load("photosOne/diceNumber5.png"), pygame.image.load("photosOne/diceNumber6.png")]
 
-        position = [0, 0, 0, 0, 0, 0]
         done = False
 
         playerNamesFunction()
@@ -236,8 +253,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         if position[turn] >= 5:
                             players[turn] = pygame.image.load(
                                 f"photosTwo/CyberpunkGoose{turn}.png")
-                            pygame.transform.scale(
-                                players[i], (60 * screenSizeInteger[resolution], 60 * screenSizeInteger[resolution]))
 
                         # makes player go to next turn
                         if turn < maxPlayerAmmount:
@@ -266,15 +281,19 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             for i in range(maxPlayerAmmount + 1):
                 player_x = squares[position[i]][0]
                 player_y = squares[position[i]][1]
+                playerNameRenderer = nameFont.render(
+                    playerNames[i], 1, (0, 0, 0))
+                screen.blit(playerNameRenderer, (player_x + (30 *
+                            screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
 
-                pygame.transform.scale(
-                    players[i], (60 * screenSizeInteger[resolution], 60 * screenSizeInteger[resolution]))
+                playersScaled = pygame.transform.scale(
+                    players[i], (120 * screenSizeInteger[resolution], 120 * screenSizeInteger[resolution]))
                 if i % 2 == 0:
                     screen.blit(
-                        players[i], (int(player_x - 40 * screenSizeInteger[resolution]), int(player_y - 40 * screenSizeInteger[resolution])))
+                        playersScaled, (int(player_x - 40 * screenSizeInteger[resolution]), int(player_y - 40 * screenSizeInteger[resolution])))
                 else:
                     screen.blit(
-                        players[i], (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
+                        playersScaled, (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
 
             # Update game with new graphics
             clock.tick(60)
@@ -342,21 +361,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         screen.blit(
             diceNumber, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
 
-        for i in range(maxPlayerAmmount + 1):
-            player_x = squares[position[i]][0]
-            player_y = squares[position[i]][1]
-            playerNameRenderer = nameFont.render(playerNames[i], 1, (0, 0, 0))
-            screen.blit(playerNameRenderer, (player_x + (30 *
-                        screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
-
-            pygame.transform.scale(
-                players[i], (60 * screenSizeInteger[resolution], 60 * screenSizeInteger[resolution]))
-            if i % 2 == 0:
-                screen.blit(players[i], (player_x - 40 * screenSizeInteger[resolution],
-                            player_y - 40 * screenSizeInteger[resolution]))
-            else:
-                screen.blit(players[i], (player_x - 80 * screenSizeInteger[resolution],
-                            player_y - 80 * screenSizeInteger[resolution]))
+        renderPlayers()
 
         # Update game with new graphics
         clock.tick(60)
@@ -366,4 +371,4 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     pygame.quit()
 
 
-# ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 5, 1)
+ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 5, 0)
