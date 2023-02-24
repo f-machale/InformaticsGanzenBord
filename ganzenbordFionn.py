@@ -140,6 +140,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                    player3Name, player4Name, player5Name]
 
     # dice images
+
     diceNumbers = [pygame.image.load("photosOne/diceNumber1.png"), pygame.image.load("photosOne/diceNumber2.png"), pygame.image.load("photosOne/diceNumber3.png"),
                    pygame.image.load("photosOne/diceNumber4.png"), pygame.image.load("photosOne/diceNumber5.png"), pygame.image.load("photosOne/diceNumber6.png")]
 
@@ -167,10 +168,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     def diceRollAnimation():
         i = 0
-
-        diceNumbers = [pygame.image.load("photosOne/diceNumber1.png"), pygame.image.load("photosOne/diceNumber2.png"), pygame.image.load("photosOne/diceNumber3.png"),
-                       pygame.image.load("photosOne/diceNumber4.png"), pygame.image.load("photosOne/diceNumber5.png"), pygame.image.load("photosOne/diceNumber6.png")]
-
         while i < 15:
             pygame.display.flip()
             diceRandomizer = random.randint(1, 6)
@@ -282,27 +279,11 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             showCorrectDie()
 
             # Render players
-            for i in range(maxPlayerAmmount + 1):
-                player_x = squares[position[i]][0]
-                player_y = squares[position[i]][1]
-                playerNameRenderer = nameFont.render(
-                    playerNames[i], 1, (0, 0, 0))
-                screen.blit(playerNameRenderer, (player_x + (30 *
-                            screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
-
-                playersScaled = pygame.transform.scale(
-                    players[i], (120 * screenSizeInteger[resolution], 120 * screenSizeInteger[resolution]))
-                if i % 2 == 0:
-                    screen.blit(
-                        playersScaled, (int(player_x - 40 * screenSizeInteger[resolution]), int(player_y - 40 * screenSizeInteger[resolution])))
-                else:
-                    screen.blit(
-                        playersScaled, (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
+            renderPlayers()
 
             # Update game with new graphics
             clock.tick(60)
             pygame.display.flip()
-
     # ----------------------------------------- Main game -----------------------------------------#
 
     while not done:
@@ -317,6 +298,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 if event.key == pygame.K_SPACE:  # spacebar
                     throw = random.randint(1, 6)
                     diceRollAnimation()
+
                     position[turn] += throw
 
                     print(position)  # For bug fixing
@@ -360,13 +342,11 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
         # show correct die
         showCorrectDie()
-
         renderPlayers()
 
         # Update game with new graphics
         clock.tick(60)
         pygame.display.flip()
-
     # end game
     pygame.quit()
 
