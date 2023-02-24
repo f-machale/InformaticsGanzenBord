@@ -178,7 +178,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             time.sleep(0.1)
             i += 1
 
-    def renderPlayers():
+    def renderPlayers(players, playerNames, position):
         for i in range(maxPlayerAmmount + 1):
             player_x = squares[position[i]][0]
             player_y = squares[position[i]][1]
@@ -195,7 +195,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 screen.blit(
                     playersScaled, (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
 
-    def showCorrectDie():
+    def showCorrectDie(throw):
         diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
             200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
         screen.blit(
@@ -208,16 +208,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         # images
         board = pygame.image.load("photosOne/berlin.jpg")
         board = pygame.transform.scale(board, (screenSize_x, screenSize_y))
-
-        # Player images while ganzenboard is active
-        players = [pygame.image.load("photosOne/Goose0.png"), pygame.image.load("photosOne/Goose1.png"), pygame.image.load("photosOne/Goose2.png"),
-                   pygame.image.load("photosOne/Goose3.png"), pygame.image.load("photosOne/Goose4.png"), pygame.image.load("photosOne/Goose5.png")]
-
-        playerNames = [player0Name, player1Name, player2Name,
-                       player3Name, player4Name, player5Name]
-
-        diceNumbers = [pygame.image.load("photosOne/diceNumber1.png"), pygame.image.load("photosOne/diceNumber2.png"), pygame.image.load("photosOne/diceNumber3.png"),
-                       pygame.image.load("photosOne/diceNumber4.png"), pygame.image.load("photosOne/diceNumber5.png"), pygame.image.load("photosOne/diceNumber6.png")]
 
         done = False
 
@@ -276,10 +266,10 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             nameFont = pygame.font.SysFont(None, 15)
 
             # show correct die
-            showCorrectDie()
+            showCorrectDie(throw)
 
             # Render players
-            renderPlayers()
+            renderPlayers(players, playerNames, position)
 
             # Update game with new graphics
             clock.tick(60)
@@ -341,8 +331,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         screen.blit(board, boardStraight)
 
         # show correct die
-        showCorrectDie()
-        renderPlayers()
+        showCorrectDie(throw)
+        renderPlayers(players, playerNames, position)
 
         # Update game with new graphics
         clock.tick(60)
