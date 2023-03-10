@@ -1,7 +1,7 @@
 to-do:
         Check positions
         make new players
-        make new board
+        make new board (create random dots and connect them and then make line thick)
         make pop up
         make challange cards
         Fix names
