@@ -3,6 +3,7 @@
 import pygame
 import random
 import time
+from ganzenbordSquares import squaresBoard1, squaresBoard2, squaresBoard3
 
 
 def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, player5Name, resolution, maxPlayerAmmount):
@@ -41,92 +42,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     nameFont = pygame.font.SysFont(None, 15)
 
     # coordinates
-    squares = [[int(725 * screenSizeInteger[resolution]),  int(1240 * screenSizeInteger[resolution])],
-               [int(908 * screenSizeInteger[resolution]),
-                int(1240 * screenSizeInteger[resolution])],
-               [int(1060 * screenSizeInteger[resolution]),
-                int(1240 * screenSizeInteger[resolution])],
-               [int(1210 * screenSizeInteger[resolution]),
-                int(1240 * screenSizeInteger[resolution])],
-               [int(1360 * screenSizeInteger[resolution]),
-                int(1240 * screenSizeInteger[resolution])],
-               [int(1500 * screenSizeInteger[resolution]),
-                int(1240 * screenSizeInteger[resolution])],
-               [int(1632 * screenSizeInteger[resolution]),
-                int(1230 * screenSizeInteger[resolution])],
-               [int(1833 * screenSizeInteger[resolution]),
-                int(1134 * screenSizeInteger[resolution])],
-               [int(1987 * screenSizeInteger[resolution]),
-                int(1037 * screenSizeInteger[resolution])],
-               [int(2061 * screenSizeInteger[resolution]),
-                int(880 * screenSizeInteger[resolution])],
-               [int(2080 * screenSizeInteger[resolution]),
-                int(686 * screenSizeInteger[resolution])],
-               [int(1980 * screenSizeInteger[resolution]),
-                int(530 * screenSizeInteger[resolution])],
-               [int(1870 * screenSizeInteger[resolution]),
-                int(325 * screenSizeInteger[resolution])],
-               [int(1860 * screenSizeInteger[resolution]),
-                int(230 * screenSizeInteger[resolution])],
-               [int(1715 * screenSizeInteger[resolution]),
-                int(155 * screenSizeInteger[resolution])],
-               [int(1555 * screenSizeInteger[resolution]),
-                int(124 * screenSizeInteger[resolution])],
-               [int(1415 * screenSizeInteger[resolution]),
-                int(124 * screenSizeInteger[resolution])],
-               [int(1276 * screenSizeInteger[resolution]),
-                int(124 * screenSizeInteger[resolution])],
-               [int(1122 * screenSizeInteger[resolution]),
-                int(124 * screenSizeInteger[resolution])],
-               [int(978 * screenSizeInteger[resolution]),
-                int(124 * screenSizeInteger[resolution])],
-               [int(793 * screenSizeInteger[resolution]),
-                int(124 * screenSizeInteger[resolution])],
-               [int(593 * screenSizeInteger[resolution]),
-                int(206 * screenSizeInteger[resolution])],
-               [int(440 * screenSizeInteger[resolution]),
-                int(350 * screenSizeInteger[resolution])],
-               [int(377 * screenSizeInteger[resolution]),
-                int(536 * screenSizeInteger[resolution])],
-               [int(377 * screenSizeInteger[resolution]),
-                int(700 * screenSizeInteger[resolution])],
-               [int(432 * screenSizeInteger[resolution]),
-                int(877 * screenSizeInteger[resolution])],
-               [int(596 * screenSizeInteger[resolution]),
-                int(1022 * screenSizeInteger[resolution])],
-               [int(756 * screenSizeInteger[resolution]),
-                int(1104 * screenSizeInteger[resolution])],
-               [int(908 * screenSizeInteger[resolution]),
-                int(1112 * screenSizeInteger[resolution])],
-               [int(1060 * screenSizeInteger[resolution]),
-                int(1112 * screenSizeInteger[resolution])],
-               [int(1210 * screenSizeInteger[resolution]),
-                int(1112 * screenSizeInteger[resolution])],
-               [int(1360 * screenSizeInteger[resolution]),
-                int(1112 * screenSizeInteger[resolution])],
-               [int(1500 * screenSizeInteger[resolution]),
-                int(1112 * screenSizeInteger[resolution])],
-               [int(1626 * screenSizeInteger[resolution]),
-                int(1107 * screenSizeInteger[resolution])],
-               [int(1759 * screenSizeInteger[resolution]),
-                int(1056 * screenSizeInteger[resolution])],
-               [int(1878 * screenSizeInteger[resolution]),
-                int(947 * screenSizeInteger[resolution])],
-               [int(1927 * screenSizeInteger[resolution]),
-                int(831 * screenSizeInteger[resolution])],
-               [int(1953 * screenSizeInteger[resolution]),
-                int(688 * screenSizeInteger[resolution])],
-               [int(1934 * screenSizeInteger[resolution]),
-                int(553 * screenSizeInteger[resolution])],
-               [int(1886 * screenSizeInteger[resolution]),
-                int(447 * screenSizeInteger[resolution])],
-               [int(1797 * screenSizeInteger[resolution]),
-                int(345 * screenSizeInteger[resolution])],
-               [int(1669 * screenSizeInteger[resolution]),
-                int(287 * screenSizeInteger[resolution])],
-               [int(1539 * screenSizeInteger[resolution]),
-                int(267 * screenSizeInteger[resolution])],
-               ]
 
     # images
     board = pygame.image.load("photosOne/Ganzenbord1.png")
@@ -163,17 +78,33 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 highestPosition = num
 
         return highestPosition
-    
+
+    def lowestPlayerPosition(position):
+        lowestPosition = None
+
+        for num in position:
+            if (lowestPosition is None or num < lowestPosition):
+                lowestPosition = num
+
+        return lowestPosition
+
     def nextPlayer(turn):
         if turn < maxPlayerAmmount:
             turn += 1
         elif turn == maxPlayerAmmount:
             turn = 0
-    
+
+        return turn
 
     # rendering functions:
 
-    def diceRollAnimation():
+    def showCorrectDie(throw):
+        diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
+            200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+        screen.blit(
+            diceNumber, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
+
+    def diceRollAnimation(throw):
         i = 0
         while i < 15:
             pygame.display.flip()
@@ -184,11 +115,18 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 diceRandom, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
             time.sleep(0.1)
             i += 1
+        showCorrectDie(throw)
 
-    def renderPlayers(players, playerNames, position):
+    def renderPlayers(players, playerNames, position, squares):
+        sublist = []
+        squaresMultiplied = [[i * screenSizeInteger[resolution]
+                              for i in sublist] for sublist in squares]
+        squaresMultiplied = [[round(x) for x in sublist]
+                             for sublist in squaresMultiplied]
+
         for i in range(maxPlayerAmmount + 1):
-            player_x = squares[position[i]][0]
-            player_y = squares[position[i]][1]
+            player_x = squaresMultiplied[position[i]][0]
+            player_y = squaresMultiplied[position[i]][1]
             playerNameRenderer = nameFont.render(playerNames[i], 1, (0, 0, 0))
             screen.blit(playerNameRenderer, (player_x + (30 *
                         screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
@@ -202,26 +140,15 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 screen.blit(
                     playersScaled, (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
 
-    def showCorrectDie(throw):
-        diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
-            200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
-        screen.blit(
-            diceNumber, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
-
     # Game Part 2
 
-    def ganzenbordPart2():
+    def ganzenbordPart2(done, clock, turn, throw):
 
         # images
         board = pygame.image.load("photosOne/berlin.jpg")
         board = pygame.transform.scale(board, (screenSize_x, screenSize_y))
 
-        done = False
-
         playerNamesFunction()
-
-        # needed for framerate of the game
-        clock = pygame.time.Clock()
 
         # title
         pygame.display.set_caption("Where am I?")
@@ -229,11 +156,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         # Player posistion
         position = [0, 0, 0, 0, 0, 0]
 
-        # who's turn is it?
-        turn = 0
+        squares = squaresBoard1
 
-        # dice throw
-        throw = 1
         while not done:
 
             # Check for inputs
@@ -245,17 +169,24 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                     if event.key == pygame.K_SPACE:  # spacebar
                         throw = random.randint(1, 6)
-                        diceRollAnimation()
+                        diceRollAnimation(throw)
                         position[turn] += throw
 
                         print(position)  # For bug fixing
 
                         if position[turn] >= 5:
+                            squares = squaresBoard3
                             players[turn] = pygame.image.load(
                                 f"photosTwo/CyberpunkGoose{turn}.png")
 
+                        elif lowestPlayerPosition >= 5:
+                            board = pygame.image.load(
+                                "photosOne/Ganzenbord2.png")
+                            board = pygame.transform.scale(
+                                board, (screenSize_x, screenSize_y))
+
                         # makes player go to next turn
-                        nextPlayer(turn)
+                        turn = nextPlayer(turn)
 
                     elif event.key == pygame.K_BACKSPACE:
                         position = [0, 0, 0, 0, 0, 0]
@@ -269,11 +200,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             # show text on screen
             nameFont = pygame.font.SysFont(None, 15)
 
-            # show correct die
-            showCorrectDie(throw)
-
             # Render players
-            renderPlayers(players, playerNames, position)
+            renderPlayers(players, playerNames, position, squares)
 
             # Update game with new graphics
             clock.tick(60)
@@ -291,24 +219,22 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                 if event.key == pygame.K_SPACE:  # spacebar
                     throw = random.randint(1, 6)
-                    #diceRollAnimation()
-                    position[turn] += throw # Adds throw to position
-                    print(position[turn]) # For bug fixing
+                    # diceRollAnimation()
+                    position[turn] += throw  # Adds throw to position
+                    print(position[turn])  # For bug fixing
 
                     # dice rules
-                    if throw == 6: 
+                    if throw == 6:
                         turn - 1
-                    
-                    #position rules
+
+                    # position rules
                     if position[turn] == 6:
                         position[turn] += 6
                     elif position[turn] == 24:
                         position[turn] = 18
- 
 
                     # makes player go to next turn
-                    nextPlayer(turn)
-    
+                    turn = nextPlayer(turn)
 
                     # Changes board depending on position
                     if highestPlayerPosition(position) >= 11 and highestPlayerPosition(position) < 20:
@@ -330,7 +256,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         pygame.display.set_caption("OH GOD HELP")
 
                     elif highestPlayerPosition(position) > 35:
-                        ganzenbordPart2()
+                        ganzenbordPart2(done, clock, turn, throw)
 
                 elif event.key == pygame.K_BACKSPACE:
                     position = [0, 0, 0, 0, 0, 0]
@@ -341,9 +267,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         boardStraight = board.get_rect()
         screen.blit(board, boardStraight)
 
-        # show correct die
-        showCorrectDie(throw)
-        renderPlayers(players, playerNames, position)
+        renderPlayers(players, playerNames, position, squaresBoard1)
 
         # Update game with new graphics
         clock.tick(60)

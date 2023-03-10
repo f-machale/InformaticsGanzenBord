@@ -4,18 +4,24 @@ to-do:
         make new board
         make pop up
         make challange cards
+        Fix names
+        look at 
 
 Rules:
     Ganzenboard:
         If throw 6, throw again
         land on 6, go to 12
-        land on 19, skip turn (maybe)
+        land on 19, skip next turn
         land 24, go back to 18
     Punk Punk:
         work with 10 sided die
         100 positions
         debuf wheel 
+            use 6 sided die
+            chance that you move 10 places back
         challange cards
+            player v player
+
 
         position 5, do a challenge card
         position 10, go to 20
