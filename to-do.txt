@@ -5,7 +5,7 @@ to-do:
         make pop up
         make challange cards
         Fix names
-        look at 
+        make exe file
 
 Rules:
     Ganzenboard:
@@ -13,6 +13,7 @@ Rules:
         land on 6, go to 12
         land on 19, skip next turn
         land 24, go back to 18
+
     Punk Punk:
         work with 10 sided die
         100 positions
@@ -40,3 +41,4 @@ Rules:
         position 91, spin the wheel
         position 99, go back to 89
 
+Verdere uitbreidingen
