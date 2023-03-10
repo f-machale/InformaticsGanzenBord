@@ -163,8 +163,15 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 highestPosition = num
 
         return highestPosition
+    
+    def nextPlayer(turn):
+        if turn < maxPlayerAmmount:
+            turn += 1
+        elif turn == maxPlayerAmmount:
+            turn = 0
+    
 
-    # random dice
+    # rendering functions:
 
     def diceRollAnimation():
         i = 0
@@ -248,10 +255,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                                 f"photosTwo/CyberpunkGoose{turn}.png")
 
                         # makes player go to next turn
-                        if turn < maxPlayerAmmount:
-                            turn += 1
-                        elif turn == maxPlayerAmmount:
-                            turn = 0
+                        nextPlayer(turn)
 
                     elif event.key == pygame.K_BACKSPACE:
                         position = [0, 0, 0, 0, 0, 0]
@@ -287,17 +291,24 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                 if event.key == pygame.K_SPACE:  # spacebar
                     throw = random.randint(1, 6)
-                    diceRollAnimation()
+                    #diceRollAnimation()
+                    position[turn] += throw # Adds throw to position
+                    print(position[turn]) # For bug fixing
 
-                    position[turn] += throw
-
-                    print(position)  # For bug fixing
+                    # dice rules
+                    if throw == 6: 
+                        turn - 1
+                    
+                    #position rules
+                    if position[turn] == 6:
+                        position[turn] += 6
+                    elif position[turn] == 24:
+                        position[turn] = 18
+ 
 
                     # makes player go to next turn
-                    if turn < maxPlayerAmmount:
-                        turn += 1
-                    elif turn == maxPlayerAmmount:
-                        turn = 0
+                    nextPlayer(turn)
+    
 
                     # Changes board depending on position
                     if highestPlayerPosition(position) >= 11 and highestPlayerPosition(position) < 20:
@@ -341,4 +352,4 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     pygame.quit()
 
 
-ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 5, 0)
+ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 5, 1)

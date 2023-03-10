@@ -1,2 +1,36 @@
-3. add rules
-7. make win screen
+to-do:
+        Check positions
+        make new players
+        make new board
+        make pop up
+        make challange cards
+
+Rules:
+    Ganzenboard:
+        If throw 6, throw again
+        land on 6, go to 12
+        land on 19, skip turn (maybe)
+        land 24, go back to 18
+    Punk Punk:
+        work with 10 sided die
+        100 positions
+        debuf wheel 
+        challange cards
+
+        position 5, do a challenge card
+        position 10, go to 20
+        position 12, spin the wheel
+        position 17, do a challenge card
+        position 23, skip turn
+        position 30, do a challenge card
+        position 34, spin the wheel
+        position 46, go back to position 41
+        position 51, go to 60
+        position 57, do a challenge card
+        position 69, do a challenge card
+        position 74, spin the wheel
+        position 79, skip turn
+        position 85, do a challenge card
+        position 91, spin the wheel
+        position 99, go back to 89
+
