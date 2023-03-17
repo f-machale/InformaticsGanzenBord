@@ -80,14 +80,13 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         return highestPosition
 
     def lowestPlayerPosition(position):
-        lowestPosition = None
-
-        for num in position:
-            if (lowestPosition is None or num < lowestPosition):
-                lowestPosition = num
+        maxPlayers = maxPlayerAmmount + 1
+        lst = position[0:maxPlayers]
+        lowestPosition = min(lst)
 
         return lowestPosition
 
+    # lowest position of a player
     def nextPlayer(turn):
         if turn < maxPlayerAmmount:
             turn += 1
@@ -145,7 +144,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     def ganzenbordPart2(done, clock, turn, throw):
 
         # images
-        board = pygame.image.load("photosOne/berlin.jpg")
+        board = pygame.image.load("photosTwo/TransitionBoard.png")
         board = pygame.transform.scale(board, (screenSize_x, screenSize_y))
 
         playerNamesFunction()
@@ -156,8 +155,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         # Player posistion
         position = [0, 0, 0, 0, 0, 0]
 
-        squares = squaresBoard1
 
+
+        squares = squaresBoard1
         while not done:
 
             # Check for inputs
@@ -173,15 +173,15 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         position[turn] += throw
 
                         print(position)  # For bug fixing
+                        print(lowestPlayerPosition(position))
 
                         if position[turn] >= 5:
                             squares = squaresBoard3
                             players[turn] = pygame.image.load(
                                 f"photosTwo/CyberpunkGoose{turn}.png")
 
-                        elif lowestPlayerPosition >= 5:
-                            board = pygame.image.load(
-                                "photosOne/Ganzenbord2.png")
+                        if lowestPlayerPosition(position) > 5:
+                            board = pygame.image.load("photosTwo/PunkPunkBoard.png")
                             board = pygame.transform.scale(
                                 board, (screenSize_x, screenSize_y))
 

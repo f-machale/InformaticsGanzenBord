@@ -1,11 +1,15 @@
 to-do:
-        Check positions
+        Implement Rules
         make new players
-        make new board (create random dots and connect them and then make line thick)
-        make pop up
-        make challange cards
         Fix names
-        make exe file
+        make new board (finish it and make skin change board)
+        background art for board
+        Menu
+
+        Check positions
+        make challange cards and debuf wheel
+        
+position[0:maxPlayerAmmount]
 
 Rules:
     Ganzenboard:
@@ -24,9 +28,9 @@ Rules:
             player v player
 
 
-        position 5, do a challenge card
-        position 10, go to 20
+        position 11, go to 20
         position 12, spin the wheel
+        position 14, do a challange card
         position 17, do a challenge card
         position 23, skip turn
         position 30, do a challenge card
@@ -41,4 +45,7 @@ Rules:
         position 91, spin the wheel
         position 99, go back to 89
 
-Verdere uitbreidingen
+Verdere uitbreidingen:
+    Game binnen een game
+    Menu
+    veel code herschreven en geoptimaseerd 
