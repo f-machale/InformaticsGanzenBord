@@ -155,9 +155,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         # Player posistion
         position = [0, 0, 0, 0, 0, 0]
 
-
-
-        squares = squaresBoard1
+        squares = squaresBoard2
         while not done:
 
             # Check for inputs
@@ -173,15 +171,28 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         position[turn] += throw
 
                         print(position)  # For bug fixing
-                        print(lowestPlayerPosition(position))
 
-                        if position[turn] >= 5:
-                            squares = squaresBoard3
+                        #positioning rules (actual board positions + 10)
+                        if position[turn] == 1:
+                            position[turn] = 10
+                        elif position[turn] == 17:
+                            position[turn] = 23
+                        elif position[turn] == 41:
+                            position[turn] = 50
+                        elif position[turn] == 82:
+                            position[turn] = 72
+
+
+                        #Checks while on intermediate board
+                        if position[turn] >= 5 and squares == squaresBoard2:
                             players[turn] = pygame.image.load(
                                 f"photosTwo/CyberpunkGoose{turn}.png")
 
-                        if lowestPlayerPosition(position) > 5:
+                        if lowestPlayerPosition(position) > 9 and squares == squaresBoard2:
                             board = pygame.image.load("photosTwo/PunkPunkBoard.png")
+                            position = [0, 0, 0, 0, 0, 0]
+                            squares = squaresBoard3
+                            boardCheck = False
                             board = pygame.transform.scale(
                                 board, (screenSize_x, screenSize_y))
 
