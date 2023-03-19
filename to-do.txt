@@ -2,14 +2,12 @@ to-do:
         Implement Rules
         make new players
         Fix names
-        make new board (finish it and make skin change board)
-        background art for board
         Menu
-
-        Check positions
         make challange cards and debuf wheel
-        
-position[0:maxPlayerAmmount]
+        Hide players
+        fix numbers
+        test
+
 
 Rules:
     Ganzenboard:
@@ -19,10 +17,9 @@ Rules:
         land 24, go back to 18
 
     Punk Punk:
-        work with 10 sided die
-        100 positions
+        work with 6 sided die
         debuf wheel 
-            use 6 sided die
+            use 3 sided die
             chance that you move 10 places back
         challange cards
             player v player
