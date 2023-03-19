@@ -1,20 +1,19 @@
 to-do:
         Implement Rules
         make new players
+        
         Fix names
-        Menu
         make challange cards and debuf wheel
-        Hide players
-        fix numbers
-        test
+
+
 
 
 Rules:
     Ganzenboard:
-        If throw 6, throw again
-        land on 6, go to 12
+        If throw 6, throw again (done)
+        land on 6, go to 12 (done)
         land on 19, skip next turn
-        land 24, go back to 18
+        land 24, go back to 18 (done)
 
     Punk Punk:
         work with 6 sided die
@@ -25,22 +24,7 @@ Rules:
             player v player
 
 
-        position 11, go to 20
-        position 12, spin the wheel
-        position 14, do a challange card
-        position 17, do a challenge card
-        position 23, skip turn
-        position 30, do a challenge card
-        position 34, spin the wheel
-        position 46, go back to position 41
-        position 51, go to 60
-        position 57, do a challenge card
-        position 69, do a challenge card
-        position 74, spin the wheel
-        position 79, skip turn
-        position 85, do a challenge card
-        position 91, spin the wheel
-        position 99, go back to 89
+
 
 Verdere uitbreidingen:
     Game binnen een game

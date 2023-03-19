@@ -97,6 +97,16 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     # rendering functions:
 
+    def renderSquare(squares):
+        if squares == squaresBoard2:
+            backgroundSquare = pygame.image.load("photosTwo/BackgroundColour.png")
+
+            squareScaled = pygame.transform.scale(backgroundSquare, (int(500 * screenSizeInteger[resolution]), int(500 * screenSizeInteger[resolution])))
+
+            screen.blit(squareScaled, (int(2400 * screenSizeInteger[resolution]), 0))
+
+            pygame.display.update()
+
     def showCorrectDie(throw):
         diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
             200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
@@ -106,7 +116,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     def diceRollAnimation(throw):
         i = 0
         while i < 15:
-            pygame.display.flip()
+            pygame.display.update()
             diceRandomizer = random.randint(1, 6)
             diceRandom = pygame.transform.scale(diceNumbers[diceRandomizer - 1], (
                 200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
@@ -126,9 +136,10 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         for i in range(maxPlayerAmmount + 1):
             player_x = squaresMultiplied[position[i]][0]
             player_y = squaresMultiplied[position[i]][1]
-            playerNameRenderer = nameFont.render(playerNames[i], 1, (0, 0, 0))
-            screen.blit(playerNameRenderer, (player_x + (30 *
-                        screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
+
+            #fix at later date
+            #playerNameRenderer = nameFont.render(playerNames[i], 1, (0, 0, 0))
+            #screen.blit(playerNameRenderer, (player_x + (30 * screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
 
             playersScaled = pygame.transform.scale(
                 players[i], (120 * screenSizeInteger[resolution], 120 * screenSizeInteger[resolution]))
@@ -151,7 +162,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
         # title
         pygame.display.set_caption("Where am I?")
-
         # Player posistion
         position = [0, 0, 0, 0, 0, 0]
 
@@ -173,26 +183,27 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         print(position)  # For bug fixing
 
                         #positioning rules (actual board positions + 10)
-                        if position[turn] == 1:
-                            position[turn] = 10
-                        elif position[turn] == 17:
-                            position[turn] = 23
-                        elif position[turn] == 41:
-                            position[turn] = 50
-                        elif position[turn] == 82:
-                            position[turn] = 72
-
+                        if squares == squaresBoard3:
+                            if position[turn] == 1:
+                                position[turn] = 10
+                            elif position[turn] == 17:
+                                position[turn] = 23
+                            elif position[turn] == 41:
+                                position[turn] = 50
+                            elif position[turn] == 82:
+                                position[turn] = 72
 
                         #Checks while on intermediate board
                         if position[turn] >= 5 and squares == squaresBoard2:
                             players[turn] = pygame.image.load(
                                 f"photosTwo/CyberpunkGoose{turn}.png")
+                            
 
-                        if lowestPlayerPosition(position) > 9 and squares == squaresBoard2:
+
+                        if lowestPlayerPosition(position) >= 9 and squares == squaresBoard2:
                             board = pygame.image.load("photosTwo/PunkPunkBoard.png")
                             position = [0, 0, 0, 0, 0, 0]
                             squares = squaresBoard3
-                            boardCheck = False
                             board = pygame.transform.scale(
                                 board, (screenSize_x, screenSize_y))
 
@@ -203,8 +214,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         position = [0, 0, 0, 0, 0, 0]
                         turn = 0
 
-            screen.fill((255, 255, 255))
-
             boardStraight = board.get_rect()
             screen.blit(board, boardStraight)
 
@@ -214,9 +223,11 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             # Render players
             renderPlayers(players, playerNames, position, squares)
 
+            renderSquare(squares)
+
             # Update game with new graphics
             clock.tick(60)
-            pygame.display.flip()
+            pygame.display.update()
     # ----------------------------------------- Main game -----------------------------------------#
 
     while not done:
@@ -282,7 +293,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
         # Update game with new graphics
         clock.tick(60)
-        pygame.display.flip()
+        pygame.display.update()
     # end game
     pygame.quit()
 
