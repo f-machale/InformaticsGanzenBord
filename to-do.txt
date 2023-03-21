@@ -1,9 +1,9 @@
 to-do:
         Implement Rules
         make new players
-        
         Fix names
         make challange cards and debuf wheel
+        Make a menu
 
 
 

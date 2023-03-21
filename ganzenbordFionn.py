@@ -164,7 +164,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         pygame.display.set_caption("Where am I?")
         # Player posistion
         position = [0, 0, 0, 0, 0, 0]
-
         squares = squaresBoard2
         while not done:
 
@@ -176,6 +175,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 elif event.type == pygame.KEYDOWN:  # checks if a key has been pressed
 
                     if event.key == pygame.K_SPACE:  # spacebar
+                        if position[turn] >= 10 and squares == squaresBoard2:
+                            turn = nextPlayer(turn)
+
                         throw = random.randint(1, 6)
                         diceRollAnimation(throw)
                         position[turn] += throw
@@ -197,8 +199,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         if position[turn] >= 5 and squares == squaresBoard2:
                             players[turn] = pygame.image.load(
                                 f"photosTwo/CyberpunkGoose{turn}.png")
-                            
-
+                        
 
                         if lowestPlayerPosition(position) >= 9 and squares == squaresBoard2:
                             board = pygame.image.load("photosTwo/PunkPunkBoard.png")
