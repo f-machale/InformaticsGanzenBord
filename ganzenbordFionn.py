@@ -30,6 +30,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     # Player posistion
     position = [0, 0, 0, 0, 0, 0]
+    skipped = [False, False, False, False, False, False]
 
     # who's turn is it?
     turn = 0
@@ -60,6 +61,11 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                    pygame.image.load("photosOne/diceNumber4.png"), pygame.image.load("photosOne/diceNumber5.png"), pygame.image.load("photosOne/diceNumber6.png")]
 
     # Global functions
+    def skipPlayer(turn, skipped):
+        if skipped[turn]:
+            skipped[turn] = False
+
+            print("?????")
 
     # Player names:
 
@@ -99,32 +105,35 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     def renderSquare(squares):
         if squares == squaresBoard2:
-            backgroundSquare = pygame.image.load("photosTwo/BackgroundColour.png")
+            backgroundSquare = pygame.image.load(
+                "photosTwo/BackgroundColour.png")
 
-            squareScaled = pygame.transform.scale(backgroundSquare, (int(500 * screenSizeInteger[resolution]), int(500 * screenSizeInteger[resolution])))
+            squareScaled = pygame.transform.scale(backgroundSquare, (int(
+                500 * screenSizeInteger[resolution]), int(500 * screenSizeInteger[resolution])))
 
-            screen.blit(squareScaled, (int(2400 * screenSizeInteger[resolution]), 0))
+            screen.blit(
+                squareScaled, (int(2400 * screenSizeInteger[resolution]), 0))
 
             pygame.display.update()
 
-    def showCorrectDie(throw):
+    def renderDice(throw):
         diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
             200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
-        screen.blit(
-            diceNumber, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
+        screen.blit(diceNumber, (int(
+            2400 * screenSizeInteger[resolution]), int(1000 * screenSizeInteger[resolution])))
 
     def diceRollAnimation(throw):
         i = 0
-        while i < 15:
+        throwDie = throw
+        while i < 9:
             pygame.display.update()
-            diceRandomizer = random.randint(1, 6)
-            diceRandom = pygame.transform.scale(diceNumbers[diceRandomizer - 1], (
+            diceRandomizer = random.randint(0, 5)
+            diceRandom = pygame.transform.scale(diceNumbers[diceRandomizer], (
                 200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
             screen.blit(
                 diceRandom, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
             time.sleep(0.1)
             i += 1
-        showCorrectDie(throw)
 
     def renderPlayers(players, playerNames, position, squares):
         sublist = []
@@ -137,9 +146,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             player_x = squaresMultiplied[position[i]][0]
             player_y = squaresMultiplied[position[i]][1]
 
-            #fix at later date
-            #playerNameRenderer = nameFont.render(playerNames[i], 1, (0, 0, 0))
-            #screen.blit(playerNameRenderer, (player_x + (30 * screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
+            # fix at later date
+            # playerNameRenderer = nameFont.render(playerNames[i], 1, (0, 0, 0))
+            # screen.blit(playerNameRenderer, (player_x + (30 * screenSizeInteger[resolution]), player_y + (30 * screenSizeInteger[resolution])))
 
             playersScaled = pygame.transform.scale(
                 players[i], (120 * screenSizeInteger[resolution], 120 * screenSizeInteger[resolution]))
@@ -175,6 +184,10 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                 elif event.type == pygame.KEYDOWN:  # checks if a key has been pressed
 
                     if event.key == pygame.K_SPACE:  # spacebar
+                        if skipped[turn]:
+                            skipped[turn] = False
+                            turn = nextPlayer(turn)
+
                         if position[turn] >= 10 and squares == squaresBoard2:
                             turn = nextPlayer(turn)
 
@@ -184,25 +197,33 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                         print(position)  # For bug fixing
 
-                        #positioning rules (actual board positions + 10)
+                        # positioning rules (actual board positions + 10)
                         if squares == squaresBoard3:
                             if position[turn] == 1:
                                 position[turn] = 10
+                            elif position[turn] == 12:
+                                skipped[turn] = True
                             elif position[turn] == 17:
                                 position[turn] = 23
+                            elif position[turn] == 22:
+                                skipped[turn] = True
                             elif position[turn] == 41:
                                 position[turn] = 50
+                            elif position[turn] == 73:
+                                skipped[turn] = True
+                            elif position[turn] == 81:
+                                skipped[turn] = True
                             elif position[turn] == 82:
                                 position[turn] = 72
 
-                        #Checks while on intermediate board
+                        # Checks while on intermediate board
                         if position[turn] >= 5 and squares == squaresBoard2:
                             players[turn] = pygame.image.load(
                                 f"photosTwo/CyberpunkGoose{turn}.png")
-                        
 
                         if lowestPlayerPosition(position) >= 9 and squares == squaresBoard2:
-                            board = pygame.image.load("photosTwo/PunkPunkBoard.png")
+                            board = pygame.image.load(
+                                "photosTwo/PunkPunkBoard.png")
                             position = [0, 0, 0, 0, 0, 0]
                             squares = squaresBoard3
                             board = pygame.transform.scale(
@@ -221,9 +242,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             # show text on screen
             nameFont = pygame.font.SysFont(None, 15)
 
-            # Render players
+            # Render
             renderPlayers(players, playerNames, position, squares)
-
+            renderDice(throw)
             renderSquare(squares)
 
             # Update game with new graphics
@@ -241,10 +262,16 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             elif event.type == pygame.KEYDOWN:  # checks if a key has been pressed
 
                 if event.key == pygame.K_SPACE:  # spacebar
-                    throw = random.randint(1, 6)
-                    # diceRollAnimation()
+                    if skipped[turn]:
+                        skipped[turn] = False
+                        turn = nextPlayer(turn)
+
+                    throw = random.randint(1, 3)
+                    diceRollAnimation(throw)
+
                     position[turn] += throw  # Adds throw to position
-                    print(position[turn])  # For bug fixing
+                    # print(position)  # For bug fixing
+                    print(throw)
 
                     # dice rules
                     if throw == 6:
@@ -253,6 +280,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                     # position rules
                     if position[turn] == 6:
                         position[turn] += 6
+                    elif position[turn] == 19:
+                        skipped[turn] = True
                     elif position[turn] == 24:
                         position[turn] = 18
 
@@ -279,19 +308,18 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         pygame.display.set_caption("OH GOD HELP")
 
                     elif highestPlayerPosition(position) > 35:
+                        skipped = [False, False, False, False, False, False]
                         ganzenbordPart2(done, clock, turn, throw)
 
                 elif event.key == pygame.K_BACKSPACE:
                     position = [0, 0, 0, 0, 0, 0]
                     turn = 0
 
-        screen.fill((255, 255, 255))
-
         boardStraight = board.get_rect()
         screen.blit(board, boardStraight)
 
         renderPlayers(players, playerNames, position, squaresBoard1)
-
+        renderDice(throw)
         # Update game with new graphics
         clock.tick(60)
         pygame.display.update()
@@ -299,4 +327,4 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     pygame.quit()
 
 
-ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 5, 1)
+ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 6, 1)
