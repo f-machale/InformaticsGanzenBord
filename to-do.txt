@@ -1,49 +1,38 @@
 to-do:
-        Implement Rules
+        fix debufWheel()
         make new players
         Fix names
-        make new board (finish it and make skin change board)
-        background art for board
-        Menu
+        make challange cards l
+        Make a menu
 
-        Check positions
-        make challange cards and debuf wheel
-        
-position[0:maxPlayerAmmount]
+
+
 
 Rules:
     Ganzenboard:
-        If throw 6, throw again
-        land on 6, go to 12
+        If throw 6, throw again (done)
+        land on 6, go to 12 (done)
         land on 19, skip next turn
-        land 24, go back to 18
+        land 24, go back to 18 (done)
 
     Punk Punk:
-        work with 10 sided die
-        100 positions
+        If throw 6, throw again (done)
+        work with 6 sided die
         debuf wheel 
-            use 6 sided die
-            chance that you move 10 places back
+            use 3 sided die for 2 turns
+            get turn skipped
+            get turn skipped
+            9 places back
+            3 places back
+            3 places back
+            3 places back
+            swap places with lowest player
+
         challange cards
             player v player
 
 
-        position 11, go to 20
-        position 12, spin the wheel
-        position 14, do a challange card
-        position 17, do a challenge card
-        position 23, skip turn
-        position 30, do a challenge card
-        position 34, spin the wheel
-        position 46, go back to position 41
-        position 51, go to 60
-        position 57, do a challenge card
-        position 69, do a challenge card
-        position 74, spin the wheel
-        position 79, skip turn
-        position 85, do a challenge card
-        position 91, spin the wheel
-        position 99, go back to 89
+
 
 Verdere uitbreidingen:
     Game binnen een game
