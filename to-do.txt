@@ -1,8 +1,8 @@
 to-do:
-        Implement Rules
+        fix debufWheel()
         make new players
         Fix names
-        make challange cards and debuf wheel
+        make challange cards l
         Make a menu
 
 
@@ -19,8 +19,15 @@ Rules:
         If throw 6, throw again (done)
         work with 6 sided die
         debuf wheel 
-            use 3 sided die
-            chance that you move 6 places back
+            use 3 sided die for 2 turns
+            get turn skipped
+            get turn skipped
+            9 places back
+            3 places back
+            3 places back
+            3 places back
+            swap places with lowest player
+
         challange cards
             player v player
 

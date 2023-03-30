@@ -99,6 +99,20 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         lowestPosition = min(lst)
 
         return lowestPosition
+    
+    def lowestPlayerTurn(position):
+        lowest = position[0]
+        lowest_pos = 0
+        maxPlayers = maxPlayerAmmount + 1
+        lst = position[0:maxPlayers]
+        
+        for i in range(1, len(lst)):
+            if position[i] < lowest:
+                lowest = position[i]
+                lowest_pos = i
+
+        return lowest_pos
+
 
     # lowest position of a player
     def nextPlayer(turn):
@@ -115,17 +129,19 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         screen.fill((0,0,0))
         boardStraight = board.get_rect()
         screen.blit(board, boardStraight)
+        renderSquare(squares)
         renderDice(throw)
-        wheelRender(wheelOption)
+        wheelRender(wheelOption, squares)
         renderPlayers(players, playerNames, position, squares)
         pygame.display.flip()
 
     #wheel rendering
-    def wheelRender(wheelOption):
-        wheelChoice = pygame.transform.scale(wheelOptions[wheelOption], (
-                200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
-        board.blit(
-                wheelChoice, (2400 * screenSizeInteger[resolution], 800 * screenSizeInteger[resolution]))
+    def wheelRender(wheelOption, squares):
+        if squares == squaresBoard3:
+            wheelChoice = pygame.transform.scale(wheelOptions[wheelOption], (
+                    200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+            board.blit(
+                    wheelChoice, (2400 * screenSizeInteger[resolution], 800 * screenSizeInteger[resolution]))
         
         
     def wheelAnimation(wheelOption):
@@ -156,9 +172,26 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             pygame.display.update(wheelRect)
             pygame.time.delay(100)
             f += 1
-        
-        wheelOption = random.randint(0,3)
-        return wheelOption
+    
+    def debufWheel(turn, position):
+        debuf = random.randint(7,8)
+
+        if debuf == 1 or 3 or 5:
+            position[turn] -= 3
+        elif debuf == 2 or 4:
+            skipPlayer(turn, skipped)
+        elif debuf == 6:
+            position[turn] -= 9
+        elif debuf == 7:
+            print("1,3 dice")
+        elif debuf == 8:
+            swappedPosition = position[turn]
+            position[turn] = lowestPlayerPosition(position)
+            position[lowestPlayerTurn(position)] = swappedPosition
+
+        print(position)
+        return position
+
         
         
     def renderSquare(squares):
@@ -266,35 +299,35 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                                 position[turn] = 10
                             elif position[turn] == 2:
                                 wheelOption = random.randint(0,3)
-                                wheelAnimation()
+                                wheelAnimation(wheelOption)
                             elif position[turn] == 12:
                                 skipped[turn] = True
                             elif position[turn] == 14:
                                 wheelOption = random.randint(0,3)
-                                wheelAnimation()
+                                wheelAnimation(wheelOption)
                             elif position[turn] == 17:
                                 position[turn] = 23
                             elif position[turn] == 22:
                                 skipped[turn] = True
                             elif position[turn] == 24:
                                 wheelOption = random.randint(0,3)
-                                wheelAnimation()
+                                wheelAnimation(wheelOption)
                             elif position[turn] == 41:
                                 position[turn] = 50
                             elif position[turn] == 52:
                                 wheelOption = random.randint(0,3)
-                                wheelAnimation()
+                                wheelAnimation(wheelOption)
                             elif position[turn] == 62:
                                 wheelOption = random.randint(0,3)
-                                wheelAnimation()
+                                wheelAnimation(wheelOption)
                             elif position[turn] == 68:
                                 wheelOption = random.randint(0,3)
-                                wheelAnimation()
+                                wheelAnimation(wheelOption)
                             elif position[turn] == 73:
                                 skipped[turn] = True
                             elif position[turn] == 74:
                                 wheelOption = random.randint(0,3)
-                                wheelAnimation()
+                                wheelAnimation(wheelOption)
                             elif position[turn] == 81:
                                 skipped[turn] = True
                             elif position[turn] == 82:
@@ -327,9 +360,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             nameFont = pygame.font.SysFont(None, 15)
 
             # Render
-            renderPlayers(players, playerNames, position, squares)
-            renderDice(throw)
-            renderSquare(squares)
+            updateScreen(board, players, playerNames, position, squaresBoard1, throw, wheelOption)
+            
 
             # Update game with new graphics
             clock.tick(60)
@@ -356,7 +388,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                     position[turn] += throw  # Adds throw to position
                     # print(position)  # For bug fixing
-                    print(wheelOption)
+                    print(lowestPlayerTurn(position))
+
+                    
 
                     # dice rules
                     if throw == 6:
@@ -369,6 +403,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         skipped[turn] = True
                     elif position[turn] == 24:
                         position[turn] = 18
+                    elif position[turn] > 10:
+                        debufWheel(turn, position)
 
                     # makes player go to next turn
                     turn = nextPlayer(turn)
@@ -400,7 +436,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                     position = [0, 0, 0, 0, 0, 0]
                     turn = 0
 
-        renderDice(throw)
         updateScreen(board, players, playerNames, position, squaresBoard1, throw, wheelOption)
         
         # Update game with new graphics
