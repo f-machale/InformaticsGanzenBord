@@ -2,7 +2,6 @@
 # pygame inistialstion
 import pygame
 import random
-import time
 from ganzenbordSquares import squaresBoard1, squaresBoard2, squaresBoard3
 
 
@@ -38,6 +37,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     # dice throw
     throw = 1
 
+    # wheel option
+    wheelOption = 0
+
     # show text on screen
     myfont = pygame.font.SysFont(None, 30)
     nameFont = pygame.font.SysFont(None, 15)
@@ -59,7 +61,13 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     diceNumbers = [pygame.image.load("photosOne/diceNumber1.png"), pygame.image.load("photosOne/diceNumber2.png"), pygame.image.load("photosOne/diceNumber3.png"),
                    pygame.image.load("photosOne/diceNumber4.png"), pygame.image.load("photosOne/diceNumber5.png"), pygame.image.load("photosOne/diceNumber6.png")]
-
+    
+    wheelOptions = [pygame.image.load("wheelAnimations/Wheeloption0.png"), pygame.image.load("wheelAnimations/Wheeloption1.png"), pygame.image.load("wheelAnimations/Wheeloption2.png"), pygame.image.load("wheelAnimations/Wheeloption3.png")]
+    
+    wheelAnimations = [pygame.image.load("wheelAnimations/Wheelanimation0.png"), pygame.image.load("wheelAnimations/Wheelanimation1.png"),pygame.image.load("wheelAnimations/Wheelanimation2.png"),pygame.image.load("wheelAnimations/Wheelanimation3.png")]
+    
+    confetti = [pygame.image.load("wheelAnimations/Confetti0.png"), pygame.image.load("wheelAnimations/Confetti1.png"), pygame.image.load("wheelAnimations/Confetti2.png"), pygame.image.load("wheelAnimations/Confetti3.png"),
+                pygame.image.load("wheelAnimations/Confetti4.png"), pygame.image.load("wheelAnimations/Confetti5.png"),pygame.image.load("wheelAnimations/Confetti6.png"), pygame.image.load("wheelAnimations/Confetti7.png")]
     # Global functions
     def skipPlayer(turn, skipped):
         if skipped[turn]:
@@ -103,6 +111,56 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     # rendering functions:
 
+    def updateScreen(board, players, playerNames, position, squares, throw, wheelOption):
+        screen.fill((0,0,0))
+        boardStraight = board.get_rect()
+        screen.blit(board, boardStraight)
+        renderDice(throw)
+        wheelRender(wheelOption)
+        renderPlayers(players, playerNames, position, squares)
+        pygame.display.flip()
+
+    #wheel rendering
+    def wheelRender(wheelOption):
+        wheelChoice = pygame.transform.scale(wheelOptions[wheelOption], (
+                200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+        board.blit(
+                wheelChoice, (2400 * screenSizeInteger[resolution], 800 * screenSizeInteger[resolution]))
+        
+        
+    def wheelAnimation(wheelOption):
+        i = 0
+        j = 0
+        f = 0
+        background_colour = pygame.Color(255, 255, 255, 0) 
+        wheelPosition = (2400 * screenSizeInteger[resolution], 800 * screenSizeInteger[resolution])
+        wheelRect = pygame.Rect(wheelPosition, (200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+        
+        while i < 15:
+            if j == 3:
+                j = 0
+            screen.fill(background_colour, wheelRect)
+            wheelAnimation = pygame.transform.scale(wheelAnimations[j], (
+                200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+            screen.blit(wheelAnimation, wheelPosition)
+            pygame.display.update(wheelRect)
+            pygame.time.delay(100)
+            i += 1
+            j += 1
+
+        while f < 7:
+            screen.fill(background_colour, wheelRect)
+            confettiAnimation = pygame.transform.scale(confetti[f], (
+                200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+            screen.blit(confettiAnimation, wheelPosition)
+            pygame.display.update(wheelRect)
+            pygame.time.delay(100)
+            f += 1
+        
+        wheelOption = random.randint(0,3)
+        return wheelOption
+        
+        
     def renderSquare(squares):
         if squares == squaresBoard2:
             backgroundSquare = pygame.image.load(
@@ -114,27 +172,29 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             screen.blit(
                 squareScaled, (int(2400 * screenSizeInteger[resolution]), 0))
 
-            pygame.display.update()
 
+    # Render Dice
     def renderDice(throw):
         diceNumber = pygame.transform.scale(diceNumbers[throw - 1], (
             200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
         screen.blit(diceNumber, (int(
             2400 * screenSizeInteger[resolution]), int(1000 * screenSizeInteger[resolution])))
 
+
     def diceRollAnimation(throw):
         i = 0
-        throwDie = throw
         while i < 9:
-            pygame.display.update()
+            pygame.display.flip()
             diceRandomizer = random.randint(0, 5)
             diceRandom = pygame.transform.scale(diceNumbers[diceRandomizer], (
                 200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
             screen.blit(
                 diceRandom, (2400 * screenSizeInteger[resolution], 1000 * screenSizeInteger[resolution]))
-            time.sleep(0.1)
+            pygame.time.delay(100)
             i += 1
+        
 
+    #player rendering
     def renderPlayers(players, playerNames, position, squares):
         sublist = []
         squaresMultiplied = [[i * screenSizeInteger[resolution]
@@ -192,6 +252,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                             turn = nextPlayer(turn)
 
                         throw = random.randint(1, 6)
+                        if throw == 6:
+                            turn - 1
+
                         diceRollAnimation(throw)
                         position[turn] += throw
 
@@ -201,16 +264,37 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         if squares == squaresBoard3:
                             if position[turn] == 1:
                                 position[turn] = 10
+                            elif position[turn] == 2:
+                                wheelOption = random.randint(0,3)
+                                wheelAnimation()
                             elif position[turn] == 12:
                                 skipped[turn] = True
+                            elif position[turn] == 14:
+                                wheelOption = random.randint(0,3)
+                                wheelAnimation()
                             elif position[turn] == 17:
                                 position[turn] = 23
                             elif position[turn] == 22:
                                 skipped[turn] = True
+                            elif position[turn] == 24:
+                                wheelOption = random.randint(0,3)
+                                wheelAnimation()
                             elif position[turn] == 41:
                                 position[turn] = 50
+                            elif position[turn] == 52:
+                                wheelOption = random.randint(0,3)
+                                wheelAnimation()
+                            elif position[turn] == 62:
+                                wheelOption = random.randint(0,3)
+                                wheelAnimation()
+                            elif position[turn] == 68:
+                                wheelOption = random.randint(0,3)
+                                wheelAnimation()
                             elif position[turn] == 73:
                                 skipped[turn] = True
+                            elif position[turn] == 74:
+                                wheelOption = random.randint(0,3)
+                                wheelAnimation()
                             elif position[turn] == 81:
                                 skipped[turn] = True
                             elif position[turn] == 82:
@@ -249,7 +333,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
             # Update game with new graphics
             clock.tick(60)
-            pygame.display.update()
+            pygame.display.flip()
     # ----------------------------------------- Main game -----------------------------------------#
 
     while not done:
@@ -266,12 +350,13 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         skipped[turn] = False
                         turn = nextPlayer(turn)
 
-                    throw = random.randint(1, 3)
+                    throw = random.randint(1, 6)     
                     diceRollAnimation(throw)
+                    
 
                     position[turn] += throw  # Adds throw to position
                     # print(position)  # For bug fixing
-                    print(throw)
+                    print(wheelOption)
 
                     # dice rules
                     if throw == 6:
@@ -315,16 +400,14 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                     position = [0, 0, 0, 0, 0, 0]
                     turn = 0
 
-        boardStraight = board.get_rect()
-        screen.blit(board, boardStraight)
-
-        renderPlayers(players, playerNames, position, squaresBoard1)
         renderDice(throw)
+        updateScreen(board, players, playerNames, position, squaresBoard1, throw, wheelOption)
+        
         # Update game with new graphics
         clock.tick(60)
-        pygame.display.update()
+
     # end game
     pygame.quit()
 
 
-ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 6, 1)
+ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 3, 1)

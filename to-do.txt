@@ -16,10 +16,11 @@ Rules:
         land 24, go back to 18 (done)
 
     Punk Punk:
+        If throw 6, throw again (done)
         work with 6 sided die
         debuf wheel 
             use 3 sided die
-            chance that you move 10 places back
+            chance that you move 6 places back
         challange cards
             player v player
 
