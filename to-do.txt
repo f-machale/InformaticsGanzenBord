@@ -1,6 +1,4 @@
 to-do:
-        fix debufWheel()
-        make new players
         Fix names
         make challange cards l
         Make a menu
