@@ -1,38 +1,37 @@
 to-do:
-        Fix names
         make challange cards l
         Make a menu
-
-
-
+        fix positions
+        check if 3 dice works
+        fix info screen on TransitionBoard
+        
 
 Rules:
     Ganzenboard:
         If throw 6, throw again (done)
         land on 6, go to 12 (done)
-        land on 19, skip next turn
+        land on 19, skip next turn (done)
         land 24, go back to 18 (done)
 
     Punk Punk:
         If throw 6, throw again (done)
-        work with 6 sided die
-        debuf wheel 
-            use 3 sided die for 2 turns
-            get turn skipped
-            get turn skipped
-            9 places back
-            3 places back
-            3 places back
-            3 places back
-            swap places with lowest player
+        work with 3 sided die (done)
+        debuf wheel (done)
+            use 3 sided die for 1 turns (done)
+            get turn skipped (done)
+            get turn skipped (done)
+            9 places back (done)
+            3 places back (done)
+            5 places forward (done)
+            3 places back (done)
+            swap places with lowest player (done)
 
         challange cards
             player v player
-
-
-
 
 Verdere uitbreidingen:
     Game binnen een game
     Menu
     veel code herschreven en geoptimaseerd 
+
+    590 can move up
