@@ -34,4 +34,3 @@ Verdere uitbreidingen:
     Menu
     veel code herschreven en geoptimaseerd 
 
-    590 can move up
