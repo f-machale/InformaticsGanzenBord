@@ -1,10 +1,10 @@
 to-do:
-        make challange cards l
+        make challange cards
         Make a menu
         fix positions
         check if 3 dice works, it does? info display does not
+        change debuf = 7 to debuf = random.randint(1,8)
         
-
 Rules:
     Ganzenboard:
         If throw 6, throw again (done)
@@ -25,11 +25,25 @@ Rules:
             3 places back (done)
             swap places with lowest player (done)
 
-        challange cards
-            player v player
+        challange cards =
+            Rock paper siccors
+                lose - go back 5 spaces
+                win - go forward 5 spaces
+            Coin flip guess
+                lose - go back 5 spaces
+                win - go forward 5 spaces
+            Guess number 1-10
+                lose - go back 3 spaces
+                win - go forward 6 spaces
+            
+                
 
 Verdere uitbreidingen:
     Game binnen een game
     Menu
-    veel code herschreven en geoptimaseerd 
+    Bijna alle code herschreven en geoptimaseerd 
+    Debuf wheel gemaakt
+    Veel code in functies
+    Alles in game is aanpasbaar op meerdere spelers. (Informatie bord, dobbelsteen en meer)
+    
 
