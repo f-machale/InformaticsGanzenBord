@@ -2,8 +2,7 @@ to-do:
         make challange cards l
         Make a menu
         fix positions
-        check if 3 dice works
-        fix info screen on TransitionBoard
+        check if 3 dice works, it does? info display does not
         
 
 Rules:

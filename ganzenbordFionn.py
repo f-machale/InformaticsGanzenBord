@@ -39,10 +39,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     # dice throw
     throw = 1
-    diceMax = 6
-
-    # wheel option
-    wheelOption = 0
 
     # show text on screen
     infoFont = pygame.font.SysFont(None, int(40 * screenSizeInteger[resolution]))
@@ -136,6 +132,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         renderPlayers(players, position, squares)
         renderInfoBackground(squares)
         renderGameInfo(playerNames, position, skipped, lowDice, squares)
+        renderSquare(squares)
         pygame.display.flip()
 
  
@@ -179,15 +176,13 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     def wheelPopUp(text):
         easygui.msgbox(text, "Debuf Wheel")
     
-    def debufWheelRandomizer(turn, position, lowDice):
-        debuf = random.randint(1,8)
-
-        if debuf == 1 or 3:
+    def debufWheelRandomizer(turn, position, lowDice, debuf):
+        if debuf == 1 or debuf == 3:
             text = "Unlucky, move back 3 places"
             position[turn] -= 3
             wheelPopUp(text)
             print("change -3")
-        elif debuf == 2 or 4:
+        elif debuf == 2 or debuf == 4: 
             text = "Unlucky, you skip your next turn"
             skipPlayer(turn, skipped)
             wheelPopUp(text)
@@ -214,14 +209,15 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             position[turn] = lowestPlayerPosition(position)
             position[lowestPlayerCache] = swappedPosition
 
-        return position
+        return position, lowDice
     
     def debufWheel(players, position, squares, wheelOption, turn, lowDice):
+        debuf = 7
         renderPlayers(players, position, squares)
         wheelOption = random.randint(0,3)
         wheelAnimation()
         wheelRender(wheelOption)
-        debufWheelRandomizer(turn, position, lowDice)
+        debufWheelRandomizer(turn, position, lowDice, debuf)
         return position
 
     def winner(turn):
@@ -286,41 +282,42 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                     playersScaled, (int(player_x - 80 * screenSizeInteger[resolution]), int(player_y - 80 * screenSizeInteger[resolution])))
                 
     def renderInfoBackground(squares):
-        if squares == squaresBoard1 or squaresBoard3:
+        if squares == squaresBoard2:
+            text_X = 1490 * screenSizeInteger[resolution]
+            text_Y = 170 * screenSizeInteger[resolution]
+        else:
             text_X = 2290 * screenSizeInteger[resolution]
             text_Y = 540 * screenSizeInteger[resolution]
-        elif squares == squaresBoard2: 
-            text_X = 2290 * screenSizeInteger[resolution]
-            text_Y = 170 * screenSizeInteger[resolution]
+            
 
         textDown = [-50, 0, 50, 100, 150, 200, 250]
        
         for i in range(maxPlayerAmmount + 2):
             backgroundList = [
-                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(55 * screenSizeInteger[resolution])),
-                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(55 * screenSizeInteger[resolution])),
-                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(55 * screenSizeInteger[resolution])),
-                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(55 * screenSizeInteger[resolution])),
-                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(55 * screenSizeInteger[resolution])),
-                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(55 * screenSizeInteger[resolution])),
-                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(55 * screenSizeInteger[resolution]))]
-            pygame.draw.rect(screen, (242, 247, 253), backgroundList[i], 0)
+                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(60 * screenSizeInteger[resolution])),
+                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(60 * screenSizeInteger[resolution])),
+                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(60 * screenSizeInteger[resolution])),
+                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(60 * screenSizeInteger[resolution])),
+                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(60 * screenSizeInteger[resolution])),
+                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(60 * screenSizeInteger[resolution])),
+                          pygame.Rect(int(text_X), int(text_Y + textDown[i] * screenSizeInteger[resolution]), int(490 * screenSizeInteger[resolution]), int(60 * screenSizeInteger[resolution]))]
+            pygame.draw.rect(screen, (242, 247, 253), backgroundList[i], 0, 4, 4, 4, 4)
     
     def renderGameInfo(playerNames, position, skipped, lowDice, squares):
         textDown = [0, 50, 100, 150, 200, 250] 
-        if squares == squaresBoard1 or squaresBoard3:
+        if squares == squaresBoard2:
+            text_X = 1500 * screenSizeInteger[resolution]
+            text_Y = 180 * screenSizeInteger[resolution] 
+        else:
             text_X = 2300 * screenSizeInteger[resolution]
             text_Y = 550 * screenSizeInteger[resolution]
-        elif squares == squaresBoard2: 
-            text_X = 2300 * screenSizeInteger[resolution]
-            text_Y = 180 * screenSizeInteger[resolution]
-
-        if squares == squaresBoard3:
-            stringPosition = str(position[i] + 10)
-        else:
-            stringPosition = str(position[i])
             
         for i in range(maxPlayerAmmount + 1):
+            if squares == squaresBoard3:
+                stringPosition = str(position[i] + 10)
+            else:
+                stringPosition = str(position[i])
+
             nameInfoRender = infoFont.render(playerNames[i], 1, (0, 0, 0))
             screen.blit(nameInfoRender, ((int(text_X)), (int(text_Y + textDown[i] * screenSizeInteger[resolution]))))
 
@@ -355,7 +352,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     # Game Part 2
 
-    def ganzenbordPart2(done, clock, turn, throw, diceMax):
+    def ganzenbordPart2(done, clock, turn, throw):
 
         # images
         board = pygame.image.load("photosTwo/TransitionBoard.png")
@@ -368,9 +365,11 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         # Player posistion
         position = [0, 0, 0, 0, 0, 0]
         wheelOption = 0
+        diceMax = 6
         skipped = [False, False, False, False, False, False]
         lowDice = [False, False, False, False, False, False]
         squares = squaresBoard2
+        
         while not done:
 
             # Check for inputs
@@ -397,8 +396,6 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                         diceRollAnimation(throw)
                         position[turn] += throw
-
-                        print(position)  # For bug fixing
 
                         # positioning rules (actual board positions + 10)
                         if squares == squaresBoard3:
@@ -463,7 +460,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
             # Render
             updateScreen(board, players, playerNames, position, squares, throw, skipped, lowDice)
-            renderSquare(squares)
+            
 
             # Update game with new graphics
             clock.tick(60)
@@ -484,13 +481,12 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         skipped[turn] = False
                         turn = nextPlayer(turn)
 
-                    throw = random.randint(5, 6)     
+                    throw = random.randint(1, 6)     
                     diceRollAnimation(throw)
                     
 
                     position[turn] += throw  # Adds throw to position
-                    # print(position)  # For bug fixing
-                    print(f"Lowest player position is {lowestPlayerPosition(position)}")
+
                     # dice rules
                     if throw == 6:
                         turn - 1
@@ -528,7 +524,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                     elif highestPlayerPosition(position) > 35:
                         skipped = [False, False, False, False, False, False]
-                        ganzenbordPart2(done, clock, turn, throw, diceMax)
+                        ganzenbordPart2(done, clock, turn, throw)
 
                 elif event.key == pygame.K_BACKSPACE:
                     position = [0, 0, 0, 0, 0, 0]
@@ -542,4 +538,4 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     pygame.quit()
 
 
-ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 2, 5)
+ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 2, 1)
