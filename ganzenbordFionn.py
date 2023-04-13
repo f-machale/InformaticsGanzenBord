@@ -30,6 +30,7 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
     # Player posistion
     position = [0, 0, 0, 0, 0, 0]
+
     skipped = [False, False, False, False, False, False]
     lowDice = [False, False, False, False, False, False]
     
@@ -141,19 +142,14 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     # card functions
     def rockPaperScissors(position, turn):
         rpsRandom = random.randint(0,2)
-
-        button_list = []
-        easygui.button_list.append("Rock")
-        easygui.button_list.append("Paper")
-        easygui.button_list.append("Scissors")
-        rpsChoice = easygui.buttonbox("Choose one: " "Rock, Paper, Scissors", button_list)
+        rpsChoice = easygui.buttonbox("Choose one: ", "Rock, Paper, Scissors", ("Rock", "Paper", "Scissors"))
 
         if rpsChoice == "Rock":
             if rpsRandom == 0:
                 easygui.msgbox("You tied, the AI also chose rock. You don't move")
             elif rpsRandom == 1:
-                easygui.msgbox("You lost, the AI chose paper. You move back 5 spaces")
-                position[turn] -= 5
+                easygui.msgbox("You lost, the AI chose paper. You move back 4 spaces")
+                position[turn] -= 4
             elif rpsRandom == 2:
                 easygui.msgbox("You won, the AI chose scissors. You move forward 5 spaces")
                 position[turn] += 5
@@ -164,12 +160,12 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             elif rpsRandom == 1:
                 easygui.msgbox("You tied, the AI also chose paper. You don't move")
             elif rpsRandom == 2:
-                easygui.msgbox("You lost, the AI chose scissors. You move back 5 spaces")
-                position[turn] -= 5
+                easygui.msgbox("You lost, the AI chose scissors. You move back 4 spaces")
+                position[turn] -= 4
         elif rpsChoice == "Scissors":
             if rpsRandom == 0:
-                easygui.msgbox("You lost, the AI chose rock. You move back 5 spaces")
-                position[turn] -= 5
+                easygui.msgbox("You lost, the AI chose rock. You move back 4 spaces")
+                position[turn] -= 4
             elif rpsRandom == 1:
                 easygui.msgbox("You won, the AI chose paper. You move forward 5 spaces")
                 position[turn] += 5
@@ -180,34 +176,21 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     
     def coinFlip(position, turn):
         coinFlip = random.randint(0,1)
-
         button_list = ["Heads", "Tails"]
-        coinFlipChoice = easygui.boolbox("Choose one: " "Coin Flip", button_list)
-
-        if coinFlipChoice == coinFlip:
+        coinList = [True, False]
+        coinFlipChoice = easygui.boolbox("Choose one: ", "Coin Flip", ("Heads", "Tails"))
+        if coinFlipChoice == coinList[coinFlip]:
             easygui.msgbox(f"Congrats, you got it right! The coin landed on {button_list[coinFlip]}. You now get to move 3 places forward")
             position[turn] += 3
-        elif coinFlipChoice != coinFlip:
+        elif coinFlipChoice != coinList[coinFlip] != coinFlip:
             easygui.msgbox(f"Unfortunatly, you got it wrong. The coin landed on {button_list[coinFlip]}. You now get to move 3 places backwards")
             position[turn] -= 3
 
     def numberGuess(position, turn):
         number = random.randint(1,10)
-        button_list = []
-        easygui.button_list.append("1")
-        easygui.button_list.append("2")
-        easygui.button_list.append("3")
-        easygui.button_list.append("4")
-        easygui.button_list.append("5")
-        easygui.button_list.append("6")
-        easygui.button_list.append("7")
-        easygui.button_list.append("8")
-        easygui.button_list.append("9")
-        easygui.button_list.append("10")
-
-        numberChoice = easygui.buttonbox("Choose a number between 1 and 10: " "A guessing game", button_list)
+        numberChoice = easygui.buttonbox("Choose a number between 1 and 10: ", "A guessing game", ("1", "2","3","4","5","6","7","8","9","10"))
         
-        if numberChoice == number:
+        if numberChoice == str(number):
             easygui.msgbox(f"Congrats, you got it right! The number was {number}. You now get to move 6 places forward")
             position[turn] += 9
         else:
@@ -222,6 +205,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         cardRect = pygame.Rect(cardPosition, (200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
 
         while i < 12:
+            if j == 3:
+                j = 0
             cardAnimation = pygame.transform.scale(cardArt[j], (
                 200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
             screen.blit(cardAnimation, cardPosition)
@@ -232,9 +217,14 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     
     def challengeCards(position, turn):
         challengeChoice = random.randint(0,2)
-        challenges = [rockPaperScissors(position, turn), coinFlip(position, turn), numberGuess(position, turn)]
         cardAnimation()
-        challenges[challengeChoice]
+        if challengeChoice == 0:
+            rockPaperScissors(position, turn)
+        elif challengeChoice == 2:
+            coinFlip(position, turn)
+        else:
+            numberGuess(position, turn)
+        return position
 
 
     #wheel rendering
@@ -310,16 +300,16 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
             position[turn] = lowestPlayerPosition(position)
             position[lowestPlayerCache] = swappedPosition
 
-        return position, lowDice
+        return position and lowDice and skipped
     
     def debufWheel(players, position, squares, wheelOption, turn, lowDice):
-        debuf = 7
+        debuf = random.randint(1,8)
         renderPlayers(players, position, squares)
         wheelOption = random.randint(0,3)
         wheelAnimation()
         wheelRender(wheelOption)
         debufWheelRandomizer(turn, position, lowDice, debuf)
-        return position
+        return position and lowDice and skipped
 
     def winner(turn):
         text =  f"{playerNames[turn]} is the winner!!!!"
@@ -488,10 +478,10 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
 
                         if lowDice[turn]:
                             diceMax = 3 
-                            lowDice = False
+                            lowDice[turn] = False
                             throw = random.randint(1, diceMax)
-                        else:
-                            throw = random.randint(1, diceMax)
+
+                        throw = random.randint(1, diceMax)
 
                         if throw == 6:
                             turn - 1
@@ -505,20 +495,34 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                                 position[turn] = 10
                             elif position[turn] == 2:
                                 debufWheel(players, position, squares, wheelOption, turn, lowDice)
+                            elif position[turn] == 4:
+                                challengeCards(position, turn)
+                            elif position[turn] == 7:
+                                challengeCards(position, turn)
                             elif position[turn] == 12:
                                 skipped[turn] = True
                             elif position[turn] == 14:
                                 debufWheel(players, position, squares, wheelOption, turn, lowDice)
                             elif position[turn] == 17:
                                 position[turn] = 23
+                            elif position[turn] == 20:
+                                challengeCards(position, turn)
                             elif position[turn] == 22:
                                 skipped[turn] = True
                             elif position[turn] == 24:
                                 debufWheel(players, position, squares, wheelOption, turn, lowDice)
+                            elif position[turn] == 29:
+                                challengeCards(position, turn)
+                            elif position[turn] == 37:
+                                challengeCards(position, turn)
                             elif position[turn] == 41:
                                 position[turn] = 50
+                            elif position[turn] == 47:
+                                challengeCards(position, turn)
                             elif position[turn] == 52:
                                 debufWheel(players, position, squares, wheelOption, turn, lowDice)
+                            elif position[turn] == 59:
+                                challengeCards(position, turn)
                             elif position[turn] == 62:
                                 debufWheel(players, position, squares, wheelOption, turn, lowDice)
                             elif position[turn] == 68:
@@ -527,6 +531,8 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                                 skipped[turn] = True
                             elif position[turn] == 74:
                                 debufWheel(players, position, squares, wheelOption, turn, lowDice)
+                            elif position[turn] == 76:
+                                challengeCards(position, turn)
                             elif position[turn] == 81:
                                 skipped[turn] = True
                             elif position[turn] == 82:
@@ -640,4 +646,4 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     pygame.quit()
 
 
-ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 2, 1)
+#ganzenbord("Fionn1", "Fionn2", "Fionn3", "Fionn4", "Fionn5", "Fionn6", 2, 0)
