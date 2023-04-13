@@ -26,15 +26,15 @@ Rules:
             swap places with lowest player (done)
 
         challange cards =
-            Rock paper siccors
+            Rock paper scissors
                 lose - go back 5 spaces
                 win - go forward 5 spaces
             Coin flip guess
-                lose - go back 5 spaces
-                win - go forward 5 spaces
+                lose - go back 3 spaces
+                win - go forward 3 spaces
             Guess number 1-10
                 lose - go back 3 spaces
-                win - go forward 6 spaces
+                win - go forward 9 spaces
             
                 
 

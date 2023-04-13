@@ -67,6 +67,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
     
     confetti = [pygame.image.load("wheelAnimations/Confetti0.png"), pygame.image.load("wheelAnimations/Confetti1.png"), pygame.image.load("wheelAnimations/Confetti2.png"), pygame.image.load("wheelAnimations/Confetti3.png"),
                 pygame.image.load("wheelAnimations/Confetti4.png"), pygame.image.load("wheelAnimations/Confetti5.png"),pygame.image.load("wheelAnimations/Confetti6.png"), pygame.image.load("wheelAnimations/Confetti7.png")]
+    
+    cardArt = [pygame.image.load("cardAnimation/cardAnimation0.png"),pygame.image.load("cardAnimation/cardAnimation1.png"),pygame.image.load("cardAnimation/cardAnimation2.png")]
+
     # Global functions
     def skipPlayer(turn, skipped):
         if skipped[turn]:
@@ -135,12 +138,110 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
         renderSquare(squares)
         pygame.display.flip()
 
- 
+    # card functions
+    def rockPaperScissors(position, turn):
+        rpsRandom = random.randint(0,2)
+
+        button_list = []
+        easygui.button_list.append("Rock")
+        easygui.button_list.append("Paper")
+        easygui.button_list.append("Scissors")
+        rpsChoice = easygui.buttonbox("Choose one: " "Rock, Paper, Scissors", button_list)
+
+        if rpsChoice == "Rock":
+            if rpsRandom == 0:
+                easygui.msgbox("You tied, the AI also chose rock. You don't move")
+            elif rpsRandom == 1:
+                easygui.msgbox("You lost, the AI chose paper. You move back 5 spaces")
+                position[turn] -= 5
+            elif rpsRandom == 2:
+                easygui.msgbox("You won, the AI chose scissors. You move forward 5 spaces")
+                position[turn] += 5
+        elif rpsChoice == "Paper":
+            if rpsRandom == 0:
+                easygui.msgbox("You won, the AI chose rock. You move forward 5 spaces")
+                position[turn] += 5
+            elif rpsRandom == 1:
+                easygui.msgbox("You tied, the AI also chose paper. You don't move")
+            elif rpsRandom == 2:
+                easygui.msgbox("You lost, the AI chose scissors. You move back 5 spaces")
+                position[turn] -= 5
+        elif rpsChoice == "Scissors":
+            if rpsRandom == 0:
+                easygui.msgbox("You lost, the AI chose rock. You move back 5 spaces")
+                position[turn] -= 5
+            elif rpsRandom == 1:
+                easygui.msgbox("You won, the AI chose paper. You move forward 5 spaces")
+                position[turn] += 5
+            elif rpsRandom == 2:
+                easygui.msgbox("You tied, the AI also chose scissors. You don't move")
+        
+        return position
+    
+    def coinFlip(position, turn):
+        coinFlip = random.randint(0,1)
+
+        button_list = ["Heads", "Tails"]
+        coinFlipChoice = easygui.boolbox("Choose one: " "Coin Flip", button_list)
+
+        if coinFlipChoice == coinFlip:
+            easygui.msgbox(f"Congrats, you got it right! The coin landed on {button_list[coinFlip]}. You now get to move 3 places forward")
+            position[turn] += 3
+        elif coinFlipChoice != coinFlip:
+            easygui.msgbox(f"Unfortunatly, you got it wrong. The coin landed on {button_list[coinFlip]}. You now get to move 3 places backwards")
+            position[turn] -= 3
+
+    def numberGuess(position, turn):
+        number = random.randint(1,10)
+        button_list = []
+        easygui.button_list.append("1")
+        easygui.button_list.append("2")
+        easygui.button_list.append("3")
+        easygui.button_list.append("4")
+        easygui.button_list.append("5")
+        easygui.button_list.append("6")
+        easygui.button_list.append("7")
+        easygui.button_list.append("8")
+        easygui.button_list.append("9")
+        easygui.button_list.append("10")
+
+        numberChoice = easygui.buttonbox("Choose a number between 1 and 10: " "A guessing game", button_list)
+        
+        if numberChoice == number:
+            easygui.msgbox(f"Congrats, you got it right! The number was {number}. You now get to move 6 places forward")
+            position[turn] += 9
+        else:
+            easygui.msgbox(f"Unfortunatly, you got it wrong. The number was {number}. You now get to move 3 places backwards")
+            position[turn] -= 3
+    
+    def cardAnimation():
+        i = 0
+        j = 0
+
+        cardPosition = (2400 * screenSizeInteger[resolution], 950 * screenSizeInteger[resolution])
+        cardRect = pygame.Rect(cardPosition, (200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+
+        while i < 12:
+            cardAnimation = pygame.transform.scale(cardArt[j], (
+                200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
+            screen.blit(cardAnimation, cardPosition)
+            pygame.display.update(cardRect)
+            pygame.time.delay(100)
+            i += 1 
+            j += 1
+    
+    def challengeCards(position, turn):
+        challengeChoice = random.randint(0,2)
+        challenges = [rockPaperScissors(position, turn), coinFlip(position, turn), numberGuess(position, turn)]
+        cardAnimation()
+        challenges[challengeChoice]
+
+
     #wheel rendering
     def wheelRender(wheelOption):
         wheelChoice = pygame.transform.scale(wheelOptions[wheelOption], (
                 200 * screenSizeInteger[resolution], 200 * screenSizeInteger[resolution]))
-        board.blit(
+        screen.blit(
                 wheelChoice, (2400 * screenSizeInteger[resolution], 950 * screenSizeInteger[resolution]))
         
         
@@ -388,8 +489,9 @@ def ganzenbord(player0Name, player1Name, player2Name, player3Name, player4Name, 
                         if lowDice[turn]:
                             diceMax = 3 
                             lowDice = False
-
-                        throw = random.randint(1, diceMax)
+                            throw = random.randint(1, diceMax)
+                        else:
+                            throw = random.randint(1, diceMax)
 
                         if throw == 6:
                             turn - 1
