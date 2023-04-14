@@ -19,6 +19,7 @@ class GanzenbordMenu(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
+        # Load and display image 
         self.imageLogo = QLabel(self)
         self.pixmap = QPixmap("photosOne/GanzenbordIcon.png")
         self.imageLogo.setPixmap(self.pixmap)
@@ -116,7 +117,9 @@ class GanzenbordMenu(QMainWindow):
 
         self.show()
 
+    #Function to start the game
     def run_script(self, selected_res):
+        #Function to check if a player was selected 
         def playerAmmount():
             player0 = self.player0Checked.checkState()
             player1 = self.player1Checked.checkState()
